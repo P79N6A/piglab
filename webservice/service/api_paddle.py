@@ -4,7 +4,7 @@
 File: api_digit.py
 Desc: 识别手写数字 API
 Demo: 
-    cd /home/work/paddle/piglab/service/ && nohup python api_paddle.py > log/api_paddle.log &
+    cd /home/work/piglab/webservice/service/ && nohup python api_paddle.py > log/api_paddle.log &
     http://www.yanjingang.com:8020/piglab/image/digit?img_file=/home/work/paddle/sample/recognize_digits/train/data/image/infer_62.jpeg
     http://yq01-aladdin-gpu1.yq01.baidu.com:8020/piglab/image/digit?img_file=/home/aladdin/yanjingang/paddle/sample/recognize_digits/train/data/tmp/infer_62_dilation.jpeg
 

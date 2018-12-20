@@ -11,8 +11,8 @@ import sys
 import json
 import tornado.web
 import tornado.ioloop
-digit_path = '../../sample/recognize_digits/train/'
-sys.path.append(digit_path)
+MODEL_PATH = '../../machinelearning/image/digit/train/'
+sys.path.append(MODEL_PATH)
 import utils
 import infer
 
@@ -50,11 +50,11 @@ class ApiImageDigit(tornado.web.RequestHandler):
         if img_file == '':
             return {'code': 2, 'msg': 'img_file不能为空'}
         if model_path == '':
-           model_path = digit_path 
+           model_path = MODEL_PATH
         res = {}
 
         try:
-            ret, msg, res = infer.main(img_file,model_path)
+            ret, msg, res = infer.infer(img_file, model_path)
             if ret != 0:
                 utils.error('execute fail [' + img_file + '] ' + msg, ApiImageDigit)
                 return {'code': 4, 'msg': '查询失败'}

@@ -11,15 +11,15 @@ from PIL import Image
 import utils
 
 #mnist训练集目录
-#mnist_path = '/home/work/paddle/sample/recognize_digits/train/data/mnist/'
-mnist_path = '/home/work/.cache/paddle/dataset/mnist/'
+mnist_path = './data/mnist/'
+#mnist_path = '~/.cache/paddle/dataset/mnist/'
 train_image   = mnist_path + 'train-images-idx3-ubyte.gz'
 train_label   = mnist_path + 'train-labels-idx1-ubyte.gz'
 test_image    = mnist_path + 't10k-images-idx3-ubyte.gz'
 test_label    = mnist_path + 't10k-labels-idx1-ubyte.gz'
 
 #读取出的图片存放位置
-output_path = '/home/work/paddle/sample/recognize_digits/train/data/'
+output_path = './data/'
 
 
 def reader_mnist(image_filename,label_filename,buffer_size=200,path='train'):

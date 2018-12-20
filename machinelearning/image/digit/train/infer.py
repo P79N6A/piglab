@@ -24,17 +24,14 @@ except ImportError:
 import utils
 import getopt
 
-def main(img_file='',model_path=''):
-    if model_path == '':
-        model_path = os.path.dirname(os.path.realpath(__file__))
-
+def infer(img_file='',model_path='./'):
     if img_file == '':
         opts, args = getopt.getopt(sys.argv[1:], "p:", ["file_name="])
         if len(args) == 0:
             print("usage:  python infer.py [file_name_name]  \n\tpython infer.py infer_62.jpeg")
             return 1,'file_name is empty',{}
         file_name = args[0]
-        img_file = model_path + '/data/image/' + file_name
+        img_file = './data/image/' + file_name
     else:
         file_name = img_file.split('/')[-1] 
 
@@ -51,16 +48,19 @@ def main(img_file='',model_path=''):
     try: #测试集图片
         imgs.append(utils.load_image(img_file,height,width))
     except:
+	utils.warning(utils.get_trace())
 	imgs.append([])
     try: #白纸手写照片
 	if len(file_name.split('_')[1].split('.')[0])>=2 and int(file_name.split('_')[1][1:2]) > 0:
 	    imgs_weight[1] = 5 
         imgs.append(utils.load_image(img_file, height, width, rotate=0, sobel=True, save_resize=True,ksize=5,dilate=1))
     except:
+	utils.warning(utils.get_trace(),'infer')
 	imgs.append([])
     try: #黑纸粗笔写照片
         imgs.append(utils.load_image(img_file, height, width, rotate=0, sobel=True, save_resize=True,ksize=3,dilate=6,erode=1))
     except:
+	utils.warning(utils.get_trace(),'infer')
 	imgs.append([])
 
     # 使用保存的模型参数+测试图片进行预测
@@ -83,23 +83,27 @@ def main(img_file='',model_path=''):
         print(numpy.argsort(result))
         results_sum = results_sum + result*imgs_weight[i]   #累加label下标概率
     #print(imgs_weight)
-    #按概率排序
+    #按概率加和排序
     lab = numpy.argsort(results_sum)  # probs and lab are the results of one batch data
     label = lab[-1]  #概率倒排最后一个
     weight = []
     for result in results:
         if numpy.argsort(result)[-1] == label:
             weight = result
-    print("概率加和&排序: ")
+    print("*label weight sort:")
     print(results_sum)
     print(lab)
-    print("img: %s" % img_file)
-    print("label: %d weight: %f" % (label,weight[label]))
+    print("*img: %s" % img_file)
+    print("*label: %d weight: %f" % (label,weight[label]))
     return 0,'',{'img':img_file, 'label':label, 'weight':list(weight.astype(str))}
 
+
 if __name__ == '__main__':
-    #ret = main()
-    img_file='/home/aladdin/yanjingang/paddle/sample/recognize_digits/train/data/tmp/infer_62_dilation.jpeg'
-    model_path='/home/aladdin/yanjingang/paddle/sample/recognize_digits/train/'
-    ret = main(img_file,model_path)
+    #default or cmd input img_file 
+    img_file='./data/image/infer_62.jpeg'
+    opts, args = getopt.getopt(sys.argv[1:], "p:", ["file_name="])
+    if len(args) > 0 and len(args[0])>4:
+        img_file = './data/image/' + args[0]
+
+    ret = infer(img_file)
     print(ret)

@@ -24,7 +24,8 @@ except ImportError:
         file=sys.stderr)
     from paddle.fluid.trainer import *
     from paddle.fluid.inferencer import *
-
+#公用static目录，通过http://www.yanjingang.com/static/tmp/1.txt 可访问过程文件
+STATIC_PATH='/tmp/static/'
 
 # 定义输入层及网络结构: 单层全连接层+softmax
 def softmax_regression():
@@ -164,7 +165,8 @@ def load_image(img_path,height,width,rotate=0,invert=False,sobel=False,ksize=5,d
     #临时保存
     if save_resize:
         name = img_path.split('/')[-1]
-        resize_path = img_path.replace(name,'') + '../tmp/' + name.split('.')[0]+"_"+str(height)+"x"+str(width)+"."+name.split('.')[1]
+        #resize_path = img_path.replace(name,'') + '../tmp/' + name.split('.')[0]+"_"+str(height)+"x"+str(width)+"."+name.split('.')[1]
+        resize_path = STATIC_PATH + 'tmp/' + name.split('.')[0]+"_"+str(height)+"x"+str(width)+"."+name.split('.')[1]
         print(resize_path)
         im.save(resize_path)
     #返回数据
@@ -215,9 +217,11 @@ def write_image(img, img_path, step='', path='tmp'):
     #print(name)
     #print(img_path)
     if step != '':
-        img_file = img_path+'../'+path+'/'+name.split('.')[0]+'_'+step+'.'+name.split('.')[1]
+        #img_file = img_path+'../'+path+'/'+name.split('.')[0]+'_'+step+'.'+name.split('.')[1]
+        img_file = STATIC_PATH+path+'/'+name.split('.')[0]+'_'+step+'.'+name.split('.')[1]
     else:
-        img_file = img_path+'../'+path+'/'+name
+        #img_file = img_path+'../'+path+'/'+name
+        img_file = STATIC_PATH+path+'/'+name
     cv2.imwrite(img_file, img)
     print(img_file)
     return img_file
@@ -308,13 +312,9 @@ if __name__ == '__main__':
     #函数测试
     info("test","test")
     warning("test","test")
-    try:
- 	a=b
-    except:
-	print(get_trace())
     print(1)
     """
-    mnist_path = '/home/work/.cache/paddle/dataset/mnist/'
+    mnist_path = './data/mnist/'
     train_image   = mnist_path + 'train-images-idx3-ubyte.gz'
     train_label   = mnist_path + 'train-labels-idx1-ubyte.gz'
     for img,label in mnist_reader_creator(train_image,train_label,1)():  #reader
@@ -324,7 +324,7 @@ if __name__ == '__main__':
         print(label)
 	break
                              
-    img_path = '/home/work/paddle/sample/recognize_digits/train/data/train/'
+    img_path = './data/train/'
     for img,label in image_reader_creator(img_path,28,28)():  #reader
         print(img)
         print(len(img))

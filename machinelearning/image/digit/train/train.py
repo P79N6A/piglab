@@ -23,22 +23,23 @@ import utils
 
 def main():
     # 定义训练和测试数据batch reader
-    mnist_path = '/home/work/.cache/paddle/dataset/mnist/'
+    #mnist_path = './data/mnist/'
+    mnist_path = '~/.cache/paddle/dataset/mnist/'
     train_image   = mnist_path + 'train-images-idx3-ubyte.gz'
     train_label   = mnist_path + 'train-labels-idx1-ubyte.gz'
     test_image    = mnist_path + 't10k-images-idx3-ubyte.gz'
     test_label    = mnist_path + 't10k-labels-idx1-ubyte.gz'
-    img_path = '/home/work/paddle/sample/recognize_digits/train/data/'
+    img_path = './data/'
     train_reader = paddle.batch(paddle.reader.shuffle(
 	#paddle.dataset.mnist.train(), 
-	#utils.mnist_reader_creator(train_image,train_label,buffer_size=100), #自己读取mnist训练集 
-	utils.image_reader_creator(img_path+'train/',28,28), #自己读取images 
+	utils.mnist_reader_creator(train_image,train_label,buffer_size=100), #自己读取mnist训练集 
+	#utils.image_reader_creator(img_path+'train/',28,28), #自己读取images 
 	buf_size=500),
         batch_size=64)
     test_reader = paddle.batch(
 	#paddle.dataset.mnist.test(),
-	#utils.mnist_reader_creator(test_image,test_label,buffer_size=100), #自己读取mnist测试集 
-	utils.image_reader_creator(img_path+'test/',28,28), #自己读取images 
+	utils.mnist_reader_creator(test_image,test_label,buffer_size=100), #自己读取mnist测试集 
+	#utils.image_reader_creator(img_path+'test/',28,28), #自己读取images 
 	batch_size=64)
 
     # 是否使用GPU
@@ -84,8 +85,8 @@ def main():
     print('The classification accuracy is %.2f%%' % (float(best[2]) * 100))
 
     # 加载测试数据
-    cur_dir = os.path.dirname(os.path.realpath(__file__))
-    img = utils.load_image(cur_dir + '/data/image/infer_52.jpeg',28,28)
+    #cur_dir = os.path.dirname(os.path.realpath(__file__))
+    img = utils.load_image('./data/image/infer_52.jpeg',28,28)
 
     # 使用保存的模型参数+测试图片进行预测
     inferencer = Inferencer(
