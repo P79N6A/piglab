@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #   Copyright (c) 2018 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +69,7 @@ trainer = Trainer(
 feed_order = ['x', 'y']
 
 # Specify the directory to save the parameters
-params_dirname = "fit_a_line.inference.model"
+params_dirname = "model"
 
 train_title = "Train cost"
 test_title = "Test cost"
